@@ -19,7 +19,7 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
 
     # print(ord("A"), ord("Z"), ord("a"), ord("z"), ord(" "))
     # for i in range(90,98):
-    #     print(chr(i), end=', ')
+    #     print(i, chr(i), end=', ')
     # print("")
 
     for symbol in plaintext:
@@ -38,7 +38,7 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
 
     return ciphertext
 
-# encrypt_caesar("python PYTHON Python3.6")
+# print(encrypt_caesar("python PYTHON Python3.6"))
 
 def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     """
@@ -55,8 +55,24 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     """
     plaintext = ""
     # PUT YOUR CODE HERE
+
+    for symbol in ciphertext:
+        if 64<ord(symbol)<91:
+            new=ord(symbol)-shift
+            if new<65:
+                new=90-new+62
+        elif 96<ord(symbol)<123:
+            new=ord(symbol)-shift
+            if new<97:
+                new=122-new+94
+        else:
+            new=ord(symbol)
+
+        plaintext+=chr(new)
+
     return plaintext
 
+# print(decrypt_caesar(encrypt_caesar("python PYTHON Python3.6 abcdefjhijklmnopqrstuwvxyz123 ABCDEFGHIJKLMNOPQRSTUWVXYZ123")))
 
 def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
     """
