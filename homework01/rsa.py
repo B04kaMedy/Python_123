@@ -14,7 +14,19 @@ def is_prime(n: int) -> bool:
     False
     """
     # PUT YOUR CODE HERE
-    pass
+    for i in range(2,n//2+1):
+        if n%i==0:
+            return False
+            # break
+        else:
+            return True
+        print(i, end=" ")
+    if n==2 or n==3:
+        return True
+    if n<2:
+        return False
+
+is_prime(51)
 
 
 def gcd(a: int, b: int) -> int:
@@ -90,17 +102,17 @@ def decrypt(pk: tp.Tuple[int, int], ciphertext: tp.List[int]) -> str:
     return "".join(plain)
 
 
-if __name__ == "__main__":
-    print("RSA Encrypter/ Decrypter")
-    p = int(input("Enter a prime number (17, 19, 23, etc): "))
-    q = int(input("Enter another prime number (Not one you entered above): "))
-    print("Generating your public/private keypairs now . . .")
-    public, private = generate_keypair(p, q)
-    print("Your public key is ", public, " and your private key is ", private)
-    message = input("Enter a message to encrypt with your private key: ")
-    encrypted_msg = encrypt(private, message)
-    print("Your encrypted message is: ")
-    print("".join(map(lambda x: str(x), encrypted_msg)))
-    print("Decrypting message with public key ", public, " . . .")
-    print("Your message is:")
-    print(decrypt(public, encrypted_msg))
+# if __name__ == "__main__":
+#     print("RSA Encrypter/ Decrypter")
+#     p = int(input("Enter a prime number (17, 19, 23, etc): "))
+#     q = int(input("Enter another prime number (Not one you entered above): "))
+#     print("Generating your public/private keypairs now . . .")
+#     public, private = generate_keypair(p, q)
+#     print("Your public key is ", public, " and your private key is ", private)
+#     message = input("Enter a message to encrypt with your private key: ")
+#     encrypted_msg = encrypt(private, message)
+#     print("Your encrypted message is: ")
+#     print("".join(map(lambda x: str(x), encrypted_msg)))
+#     print("Decrypting message with public key ", public, " . . .")
+#     print("Your message is:")
+#     print(decrypt(public, encrypted_msg))
