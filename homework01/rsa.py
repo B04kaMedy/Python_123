@@ -59,8 +59,24 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     23
     """
     # PUT YOUR CODE HERE
-    pass
-
+    A = phi
+    B = e
+    mass = [[A, B, A % B, A // B]]
+    while A % B != 0:
+        c = A % B
+        A = B
+        B = c
+        mass.append([A, B, A % B, A // B])
+    mass.reverse()
+    # print(mass)
+    mass[0].append(0)
+    mass[0].append(1)
+    for i in range(1,len(mass)):
+        mass[i].append(mass[i-1][5])
+        mass[i].append(mass[i-1][4]-mass[i-1][5]*mass[i][3])
+    print(mass)
+    return ( mass[-1][5] % phi )
+    
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
     if not (is_prime(p) and is_prime(q)):
