@@ -16,12 +16,6 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     """
     ciphertext = ""
     # PUT YOUR CODE HERE
-
-    # print(ord("A"), ord("Z"), ord("a"), ord("z"), ord(" "))
-    # for i in range(90,98):
-    #     print(i, chr(i), end=', ')
-    # print("")
-
     for symbol in plaintext:
         if 64<ord(symbol)<91:
             new=ord(symbol)+shift
