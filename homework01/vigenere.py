@@ -38,8 +38,6 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
 
     return ciphertext
 
-# print(encrypt_vigenere("python3.6", "c"))
-
 
 def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
@@ -80,5 +78,3 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
         plaintext+=chr(new)
 
     return plaintext
-
-# print(decrypt_vigenere("LXFOPVEFRNHR".lower(), "LEMON".lower()))
