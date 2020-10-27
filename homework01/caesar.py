@@ -16,21 +16,31 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     """
     ciphertext = ""
     # PUT YOUR CODE HERE
-    for symbol in plaintext:
-        if 64<ord(symbol)<91:
-            new=ord(symbol)+shift
-            if new>90:
-                new=64+new-90
-        elif 96<ord(symbol)<123:
-            new=ord(symbol)+shift
-            if new>122:
-                new=96+new-122
+     
+    for char in plaintext:
+        if ord('A') <= ord(char) <= ord('Z'):
+            offset_first_letter = ord('A')
+            length_of_alphabet  = ord('Z') - ord('A') + 1
+        elif ord('a') <= ord(char) <= ord('z'):
+            offset_first_letter = ord('a')
+            length_of_alphabet  = ord('z') - ord('a') + 1
+        elif ord('А') <= ord(char) <= ord('Я'):
+            offset_first_letter = ord('А')
+            length_of_alphabet  = ord('Я') - ord('А') + 1
+        elif ord('а') <= ord(char) <= ord('я'):
+            offset_first_letter = ord('а')
+            length_of_alphabet  = ord('я') - ord('а') + 1
         else:
-            new=ord(symbol)
-
-        ciphertext+=chr(new)
+            offset_first_letter = None
+        if offset_first_letter is not None:
+            new_ord = (ord(char) - offset_first_letter + shift) % length_of_alphabet + offset_first_letter
+            new_char = chr(new_ord)
+        else:
+            new_char = char
+        ciphertext += new_char
 
     return ciphertext
+
 
 def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     """
@@ -47,22 +57,31 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     """
     plaintext = ""
     # PUT YOUR CODE HERE
-
-    for symbol in ciphertext:
-        if 64<ord(symbol)<91:
-            new=ord(symbol)-shift
-            if new<65:
-                new=90-new+62
-        elif 96<ord(symbol)<123:
-            new=ord(symbol)-shift
-            if new<97:
-                new=122-new+94
+    
+    for char in ciphertext:
+        if ord('A') <= ord(char) <= ord('Z'):
+            offset_first_letter = ord('A')
+            length_of_alphabet  = ord('Z') - ord('A') + 1
+        elif ord('a') <= ord(char) <= ord('z'):
+            offset_first_letter = ord('a')
+            length_of_alphabet  = ord('z') - ord('a') + 1
+        elif ord('А') <= ord(char) <= ord('Я'):
+            offset_first_letter = ord('А')
+            length_of_alphabet  = ord('Я') - ord('А') + 1
+        elif ord('а') <= ord(char) <= ord('я'):
+            offset_first_letter = ord('а')
+            length_of_alphabet  = ord('я') - ord('а') + 1
         else:
-            new=ord(symbol)
-
-        plaintext+=chr(new)
+            offset_first_letter = None
+        if offset_first_letter is not None:
+            new_ord = (ord(char) - offset_first_letter - shift) % length_of_alphabet + offset_first_letter
+            new_char = chr(new_ord)
+        else:
+            new_char = char
+        plaintext += new_char
 
     return plaintext
+
 
 def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
     """
@@ -70,4 +89,29 @@ def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
     """
     best_shift = 0
     # PUT YOUR CODE HERE
+
+    dictLower = ([])
+    for m in dictionary:
+        dictLower.append(m.lower())
+
+    isBreak = False
+    length_of_alphabet  = ord('Z') - ord('A')
+    while best_shift <= length_of_alphabet:
+        plaintext = decrypt_caesar(ciphertext, best_shift)
+        if plaintext.lower() in dictLower:
+            isBreak = True
+            break
+        best_shift += 1
+    if isBreak == False:
+        best_shift = -1
+
     return best_shift
+
+
+def main() -> None:
+    print("Hello, World!")
+    print(caesar_breaker_brute_force('Sbwkrq', {"c","Pascal","Delphi","Python","basic","1c","sql","fortran","pl","bash"}))
+
+
+if __name__ == "__main__":
+    main()
