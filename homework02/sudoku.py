@@ -6,7 +6,7 @@ def read_sudoku(filename: str) -> List[List[str]]:
     digits = [c for c in open(filename).read() if c in '123456789.']
     grid = group(digits, 9)
     return grid
-
+    
 
 def display(grid: List[List[str]]) -> None:
     """Вывод Судоку """
