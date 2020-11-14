@@ -1,5 +1,6 @@
 from typing import Tuple, List, Set, Optional
 import math
+import random
 
 def read_sudoku(filename: str) -> List[List[str]]:
     """ Прочитать Судоку из указанного файла """
@@ -210,8 +211,19 @@ def generate_sudoku(N: int) -> List[List[str]]:
     >>> check_solution(solution)
     True
     """
-    pass
+    dim = 9
+    grid = [['.' for i in range(dim)] for j in range(dim)]
+    grid = solve(grid)
 
+    temp = 0
+    while  temp < (dim*dim - N):
+        y = random.randint(0,8)
+        x = random.randint(0,8)
+        if grid[y][x] != '.':
+            grid[y][x] = '.'
+            temp += 1
+    
+    return(grid)
 
 
 if __name__ == '__main__':
