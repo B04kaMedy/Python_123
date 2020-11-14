@@ -1,5 +1,5 @@
 from typing import Tuple, List, Set, Optional
-
+import math
 
 def read_sudoku(filename: str) -> List[List[str]]:
     """ Прочитать Судоку из указанного файла """
@@ -78,11 +78,12 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    rowNumber = (pos[0]//3)*3
-    colNumber = (pos[1]//3)*3
+    n = int(math.sqrt(len(grid)))
+    rowNumber = (pos[0]//n)*n
+    colNumber = (pos[1]//n)*n
     block: List[str] = []
-    for i in range(3):
-        for j in range(3):
+    for i in range(n):
+        for j in range(n):
             block.append(grid[rowNumber+i][colNumber+j])
     return block
 
@@ -96,7 +97,13 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
-    pass
+    n = len(grid)
+    for i in range(n):
+        for j in range(n):
+            if grid[i][j] == '.':
+                return i,j
+    return None
+
 
 
 def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str]:
@@ -110,7 +117,24 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     >>> values == {'2', '5', '9'}
     True
     """
-    pass
+    possibleValues = set("0","1","2","3","4","5","6","7","8")
+    for i in get_row(grid, pos):
+        if i == '.':
+            continue
+        else:
+            possibleValues.remove(i)
+    for i in get_col(grid, pos):
+        if i == '.':
+            continue
+        else:
+            possibleValues.remove(i)
+    for i in get_block(grid, pos):
+        if i == '.':
+            continue
+        else:
+            possibleValues.remove(i)
+        
+    return possibleValues
 
 
 def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
