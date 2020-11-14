@@ -122,7 +122,8 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
         if i == '.':
             continue
         else:
-            possibleValues.remove(i)
+            if i in possibleValues:
+                possibleValues.remove(i)
     for i in get_col(grid, pos):
         if i == '.':
             continue
@@ -152,7 +153,20 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    pass
+    if find_empty_positions(grid) is None:
+        return grid
+    emtyPos = find_empty_positions(grid)
+    posVal = find_possible_values(grid, emtyPos)
+    if len(posVal) == 0:
+        return None
+    for i in posVal:
+        row, col = emtyPos
+        grid[row][col] = i
+        result = solve(grid)
+        if result is not None:
+            return result
+        grid[row][col] = '.'
+            
 
 
 def check_solution(solution: List[List[str]]) -> bool:
@@ -191,9 +205,9 @@ if __name__ == '__main__':
     for fname in ['puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt']:
         grid = read_sudoku(fname)
         display(grid)
-        # solution = solve(grid)
-        # if not solution:
-        #     print(f"Puzzle {fname} can't be solved")
-        # else:
-        #     display(solution)
+        solution = solve(grid)
+        if not solution:
+            print(f"Puzzle {fname} can't be solved")
+        else:
+            display(solution)
 
