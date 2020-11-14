@@ -78,8 +78,13 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    pass
-
+    rowNumber = (pos[0]//3)*3
+    colNumber = (pos[1]//3)*3
+    block: List[str] = []
+    for i in range(3):
+        for j in range(3):
+            block.append(grid[rowNumber+i][colNumber+j])
+    return block
 
 def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     """ Найти первую свободную позицию в пазле
