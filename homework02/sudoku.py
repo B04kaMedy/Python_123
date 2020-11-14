@@ -6,7 +6,7 @@ def read_sudoku(filename: str) -> List[List[str]]:
     digits = [c for c in open(filename).read() if c in '123456789.']
     grid = group(digits, 9)
     return grid
-    
+
 
 def display(grid: List[List[str]]) -> None:
     """Вывод Судоку """
@@ -28,7 +28,15 @@ def group(values: List[str], n: int) -> List[List[str]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    pass
+    resultList: List[List[str]] = []
+
+    while len(values) > 0:
+        tempList = values[:n]
+        resultList.append(tempList)
+        values = values[n:]
+        # print(values)
+
+    return resultList
 
 
 def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -145,12 +153,14 @@ def generate_sudoku(N: int) -> List[List[str]]:
     pass
 
 
+
 if __name__ == '__main__':
     for fname in ['puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt']:
         grid = read_sudoku(fname)
         display(grid)
-        solution = solve(grid)
-        if not solution:
-            print(f"Puzzle {fname} can't be solved")
-        else:
-            display(solution)
+        # solution = solve(grid)
+        # if not solution:
+        #     print(f"Puzzle {fname} can't be solved")
+        # else:
+        #     display(solution)
+
