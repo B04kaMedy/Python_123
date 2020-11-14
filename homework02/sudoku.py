@@ -117,7 +117,7 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     >>> values == {'2', '5', '9'}
     True
     """
-    possibleValues = set("0","1","2","3","4","5","6","7","8")
+    possibleValues = set("123456789")
     for i in get_row(grid, pos):
         if i == '.':
             continue
@@ -127,12 +127,14 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
         if i == '.':
             continue
         else:
-            possibleValues.remove(i)
+            if i in possibleValues:
+                possibleValues.remove(i)
     for i in get_block(grid, pos):
         if i == '.':
             continue
         else:
-            possibleValues.remove(i)
+            if i in possibleValues:
+                possibleValues.remove(i)
         
     return possibleValues
 
