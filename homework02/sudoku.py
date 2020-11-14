@@ -34,7 +34,6 @@ def group(values: List[str], n: int) -> List[List[str]]:
         tempList = values[:n]
         resultList.append(tempList)
         values = values[n:]
-        # print(values)
 
     return resultList
 
@@ -49,8 +48,8 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
-    pass
-
+    resultRow = grid[pos[0]]
+    return resultRow
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     """ Возвращает все значения для номера столбца, указанного в pos
