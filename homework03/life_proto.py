@@ -17,8 +17,6 @@ class GameOfLife:
         self.height = height
         self.cell_size = cell_size
 
-        self.new_grid = []
-
         # Устанавливаем размер окна
         self.screen_size = width, height
         # Создание нового окна
@@ -30,6 +28,9 @@ class GameOfLife:
 
         # Скорость протекания игры
         self.speed = speed
+
+        self.grid = self.create_grid(randomize=True)
+
 
     def draw_lines(self) -> None:
         """ Отрисовать сетку """
@@ -55,7 +56,7 @@ class GameOfLife:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     running = False
-            self.draw_lines()
+            # self.draw_lines()
 
             # Отрисовка списка клеток
             # Выполнение одного шага игры (обновление состояния ячеек)
@@ -63,7 +64,7 @@ class GameOfLife:
             self.screen.fill(pygame.Color('white'))
             self.draw_lines()
             self.draw_grid()
-            self.new_grid = self.get_next_generation()
+            self.grid = self.get_next_generation()
 
             pygame.display.flip()
             clock.tick(self.speed)
@@ -72,22 +73,19 @@ class GameOfLife:
     def create_grid(self, randomize: bool=False) -> Grid:
         """
         Создание списка клеток.
-
         Клетка считается живой, если ее значение равно 1, в противном случае клетка
         считается мертвой, то есть, ее значение равно 0.
-
         Parameters
         ----------
         randomize : bool
             Если значение истина, то создается матрица, где каждая клетка может
             быть равновероятно живой или мертвой, иначе все клетки создаются мертвыми.
-
         Returns
         ----------
         out : Grid
             Матрица клеток размером `cell_height` х `cell_width`.
         """
-        new_grid = []
+        grid = []
 
         for i in range(self.cell_height):
             new_line = []
@@ -96,8 +94,8 @@ class GameOfLife:
                     new_line.append(random.randint(0, 1))
                 else:
                     new_line.append(0)
-            new_grid.append(new_line)
-        return new_grid
+            grid.append(new_line)
+        return grid
 
     def draw_grid(self) -> None:
         """
@@ -105,7 +103,7 @@ class GameOfLife:
         """
         for i in range(self.cell_height):
             for j in range(self.cell_width):
-                if self.new_grid[i][j] == 1:
+                if self.grid[i][j] == 1:
                     x = j*self.cell_size
                     y = i*self.cell_size
 
@@ -116,16 +114,13 @@ class GameOfLife:
     def get_neighbours(self, cell: Cell) -> Cells:
         """
         Вернуть список соседних клеток для клетки `cell`.
-
         Соседними считаются клетки по горизонтали, вертикали и диагоналям,
         то есть, во всех направлениях.
-
         Parameters
         ----------
         cell : Cell
             Клетка, для которой необходимо получить список соседей. Клетка
             представлена кортежем, содержащим ее координаты на игровом поле.
-
         Returns
         ----------
         out : Cells
@@ -140,14 +135,13 @@ class GameOfLife:
                     continue
                 if i == cell[0] and j == cell[1]:
                     continue
-                list_of_neighbors.append(self.new_grid[i][j])
+                list_of_neighbors.append(self.grid[i][j])
         return list_of_neighbors
 
 
     def get_next_generation(self) -> Grid:
         """
         Получить следующее поколение клеток.
-
         Returns
         ----------
         out : Grid
@@ -157,7 +151,7 @@ class GameOfLife:
 
         for i in range(self.cell_height):
             for j in range(self.cell_width):
-                if self.new_grid[i][j] == 1:
+                if self.grid[i][j] == 1:
                     if 2 <= sum(self.get_neighbours((i, j))) <= 3:
                         temp_grid[i][j] = 1
                     else:
@@ -170,6 +164,6 @@ class GameOfLife:
         return temp_grid
 
 
-# game = GameOfLife(1000, 800)
-# game.new_grid = game.create_grid(randomize=True)
+# game = GameOfLife(500, 500)
+# # game.grid = game.create_grid(randomize=True)
 # game.run()
