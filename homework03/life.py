@@ -57,7 +57,7 @@ class GameOfLife:
                     continue
                 if i == cell[0] and j == cell[1]:
                     continue
-                list_of_neighbors.append(self.grid[i][j])
+                list_of_neighbors.append(self.curr_generation[i][j])
         return list_of_neighbors
 
     def get_next_generation(self) -> Grid:
