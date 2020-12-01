@@ -87,11 +87,11 @@ class GameOfLife:
         self.n_generation += 1
 
     @property
-    def is_max_generations_exceeded(self) -> bool:
+    def is_max_generations_exceed(self) -> bool:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        return (self.n_generation > self.max_generations)
+        return (self.n_generation >= self.max_generations)
 
     @property
     def is_changing(self) -> bool:
@@ -143,6 +143,6 @@ class GameOfLife:
 
 # random.seed(4321)
 # game = GameOfLife((10, 10), max_generations=50)
-# while game.is_changing and not game.is_max_generations_exceeded:
+# while game.is_changing and not game.is_max_generations_exceed:
 #     game.step()
 #     print(game.n_generation)
