@@ -107,7 +107,7 @@ class GameOfLife:
                     x = j*self.cell_size
                     y = i*self.cell_size
 
-                    pygame.draw.rect(self.screen, pygame.Color('grey'),
+                    pygame.draw.rect(self.screen, pygame.Color('pink'),
                                      (x+1, y+1, self.cell_size-1, self.cell_size-1))
 
 
@@ -164,6 +164,5 @@ class GameOfLife:
         return temp_grid
 
 
-# game = GameOfLife(500, 500)
-# # game.grid = game.create_grid(randomize=True)
+# game = GameOfLife(300, 300, 10, 10)
 # game.run()
