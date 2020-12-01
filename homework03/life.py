@@ -27,11 +27,6 @@ class GameOfLife:
         # Текущее число поколений
         self.n_generation = 1
 
-        self.grid = self.create_grid()
-        # self.cell_size = 10
-        # self.cell_height = self.cols*self.cell_size
-        # self.cell_width = self.rows*self.cell_size
-
     def create_grid(self, randomize: bool=False) -> Grid:
         # Copy from previous assignment
         grid = []
@@ -62,11 +57,11 @@ class GameOfLife:
 
     def get_next_generation(self) -> Grid:
         # Copy from previous assignment
-        temp_grid = self.create_grid()
+        temp_grid = self.create_grid(randomize=False)
 
         for i in range(self.rows):
             for j in range(self.cols):
-                if self.grid[i][j] == 1:
+                if self.curr_generation[i][j] == 1:
                     if 2 <= sum(self.get_neighbours((i, j))) <= 3:
                         temp_grid[i][j] = 1
                     else:
@@ -140,9 +135,3 @@ class GameOfLife:
 
         with open(filename, 'w') as file:
             json.dump(json_data, file)
-
-# random.seed(4321)
-# game = GameOfLife((10, 10), max_generations=50)
-# while game.is_changing and not game.is_max_generations_exceed:
-#     game.step()
-#     print(game.n_generation)
