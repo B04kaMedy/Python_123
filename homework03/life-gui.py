@@ -43,30 +43,19 @@ class GUI(UI):
                     pygame.draw.rect(self.screen, pygame.Color(dark_green),
                                      (x + 1, y + 1, self.cell_size - 1, self.cell_size - 1))
 
-    def pause_anim(self):
-        # for i in range(1, 10):
-        rect_width = int(self.width*0.1)
-        rect_height = int(self.height*0.1)
-        pygame.draw.rect(self.screen, pygame.Color("red"),(
-                           ((self.width / 2) - int(rect_width/2), (self.height / 2) - rect_height,
-                            int(rect_width/3), rect_height)))
-        pygame.draw.rect(self.screen, pygame.Color("red"), (
-            ((self.width / 2) + int(rect_width/2), (self.height / 2) - rect_height,
-            int(rect_width / 3), rect_height)))
-        pygame.display.flip()
-        pygame.time.wait(500)
-
     def mouse_check(self):
         x, y = pygame.mouse.get_pos()
         if pygame.mouse.get_pressed()[0]:
             left_number = (x+0) // self.cell_size
             right_number = (y+0) // self.cell_size
+            self.life.curr_generation = self.life.prev_generation
             self.life.curr_generation[right_number][left_number] = \
                 int(not bool(self.life.curr_generation[right_number][left_number]))
             self.screen.fill(pygame.Color('white'))
             self.draw_lines()
             self.draw_grid()
             pygame.display.flip()
+            pygame.time.wait(300)
 
     def run(self) -> None:
         pygame.init()
@@ -85,9 +74,7 @@ class GUI(UI):
                     if event.type == KEYUP:
                         if event.key == K_SPACE:
                             self.is_paused = False
-                            # self.pause_anim()
                 self.mouse_check()
-
 
             self.screen.fill(pygame.Color('white'))
             self.draw_lines()
@@ -105,7 +92,8 @@ sys_max_gen = 0
 sys_cell = 0
 sys_speed = 0
 if len(sys.argv) <= 1:
-    print("\nВызов программы со стандартными настройками.\nВызовите программу с аргументом --help для помощи.\n")
+    print("\nВызов программы со стандартными настройками.\nВызовите программу с аргументом --help для помощи.\n"
+          "Стандартные настройки: скорость 10, поле 50x50, кол-во поколений=10, размер клетки=10px\n")
 else:
     for j in range(1, len(sys.argv), 2):
         i = sys.argv[j]
@@ -114,6 +102,7 @@ else:
                   '   Чтобы установить максимальное число поколений в игре воспользуйтесь аргументом --max_generations <int>\n'
                   '   Чтобы установить размер клетки воспользуйтесь аргументом --cell <int>\n'
                   '   Чтобы установить скорость игры воспользуйтесь аргументом --speed <int>\n'
+                  '\n   <space> - пауза, в режиме паузы можно изменять положение клетов <LMB>\n'
                   '   Приятной игры!\n')
             exit(1)
         elif i == "--rows":
