@@ -43,20 +43,30 @@ class GUI(UI):
                     pygame.draw.rect(self.screen, pygame.Color(dark_green),
                                      (x + 1, y + 1, self.cell_size - 1, self.cell_size - 1))
 
-    def update(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
+    def pause_anim(self):
+        # for i in range(1, 10):
+        rect_width = int(self.width*0.1)
+        rect_height = int(self.height*0.1)
+        pygame.draw.rect(self.screen, pygame.Color("red"),(
+                           ((self.width / 2) - int(rect_width/2), (self.height / 2) - rect_height,
+                            int(rect_width/3), rect_height)))
+        pygame.draw.rect(self.screen, pygame.Color("red"), (
+            ((self.width / 2) + int(rect_width/2), (self.height / 2) - rect_height,
+            int(rect_width / 3), rect_height)))
+        pygame.display.flip()
+        pygame.time.wait(500)
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
-            self.is_paused = not self.is_paused
-
-        if self.is_paused:
-            pygame.draw.circle(self.screen, pygame.Color('red'),
-                               (self.height / 2, self.width / 2), 30)
-            pygame.time.wait(100)
-            self.update()
+    def mouse_check(self):
+        x, y = pygame.mouse.get_pos()
+        if pygame.mouse.get_pressed()[0]:
+            left_number = (x+0) // self.cell_size
+            right_number = (y+0) // self.cell_size
+            self.life.curr_generation[right_number][left_number] = \
+                int(not bool(self.life.curr_generation[right_number][left_number]))
+            self.screen.fill(pygame.Color('white'))
+            self.draw_lines()
+            self.draw_grid()
+            pygame.display.flip()
 
     def run(self) -> None:
         pygame.init()
@@ -65,21 +75,24 @@ class GUI(UI):
         self.screen.fill(pygame.Color('white'))
 
         while self.life.is_changing and not self.life.is_max_generations_exceed:
-            self.is_paused = False
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
+                if event.type == KEYUP:
+                    if event.key == K_SPACE:
+                        self.is_paused = True
+
+            while self.is_paused:
+                for event in pygame.event.get():
+                    if event.type == KEYUP:
+                        if event.key == K_SPACE:
+                            self.is_paused = False
+                            # self.pause_anim()
+                self.mouse_check()
+
 
             self.screen.fill(pygame.Color('white'))
             self.draw_lines()
             self.draw_grid()
             self.life.step()
-            self.update()
-            # keys = pygame.key.get_pressed()
-            # if self.is_paused:
-            # while keys[pygame.K_SPACE]:
-            #     keys = pygame.key.get_pressed()
-            #     pygame.time.wait(1)
 
             pygame.display.flip()
             clock.tick(self.speed)
@@ -122,9 +135,9 @@ life = GameOfLife((24, 80))
 if sys_cell == 0:
     sys_cell = 10
 if sys_cols == 0:
-    sys_cols = 80
+    sys_cols = 50
 if sys_rows == 0:
-    sys_rows = 24
+    sys_rows = 50
 if sys_max_gen == 0:
     sys_max_gen = 10
 if sys_speed == 0:
