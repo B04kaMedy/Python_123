@@ -1,5 +1,5 @@
 import curses
-
+import sys
 from life import GameOfLife
 from ui import UI
 
@@ -58,6 +58,40 @@ class Console(UI):
         curses.endwin()
         # print("You pressed %s which is keycode %d." % (chr(c), c))
 
-life = GameOfLife((24, 80), max_generations=10)
+
+sys_cols = 0
+sys_rows = 0
+sys_max_gen = 0
+if len(sys.argv) <= 1:
+    print("\nВызов программы со стандартными настройками.\nВызовите программу с аргументом --help для помощи.\n")
+else:
+    for j in range(1, len(sys.argv), 2):
+        i = sys.argv[j]
+        if i == "--help":
+            print('\n   Чтобы установить размер окна воспользуйтесь аргументами --rows <int> --cols <int>\n'
+                  '   Чтобы установить максимальное число поколений в игре воспользуйтесь аргументом --max_generations <int>\n'
+                  '   Приятной игры!\n')
+            exit(1)
+        elif i == "--rows":
+            sys_rows = int(sys.argv[j+1])
+        elif i == "--cols":
+            sys_cols = int(sys.argv[j+1])
+        elif i == "--max_generations":
+            sys_max_gen = int(sys.argv[j+1])
+        else:
+            print("Неверный ключ командной строки: ", i)
+            exit(1)
+
+
+life = GameOfLife((24, 80))
+if sys_cols > 0 and sys_rows > 0:
+    if sys_max_gen > 0:
+        life = GameOfLife((sys_rows, sys_cols), max_generations=sys_max_gen)
+    else:
+        life = GameOfLife((sys_rows, sys_cols), max_generations=10)
+elif sys_max_gen > 0:
+    life = GameOfLife((24, 80), max_generations=sys_max_gen)
+else:
+    life = GameOfLife((24, 80), max_generations=10)
 ui = Console(life)
 ui.run()
